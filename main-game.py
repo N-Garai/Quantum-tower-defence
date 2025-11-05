@@ -16,6 +16,7 @@ from game_logic.tower import TowerManager
 from rendering.game_renderer import GameRenderer
 from rendering.ui import UIManager
 from config.game_config import *
+from rendering.effects import EffectsManager
 
 # Setup logging
 logging.basicConfig(
@@ -67,7 +68,7 @@ class QuantumTowerDefense:
         # Initialize rendering
         self.renderer = GameRenderer(self.screen)
         self.ui_manager = UIManager(self.screen)
-        
+        self.effects_manager = EffectsManager()
         # Game state
         self.game_state = "menu"  # menu, playing, paused, game_over, victory
         self.selected_tower_type = None
@@ -282,6 +283,8 @@ class QuantumTowerDefense:
         # Calculate coherence drain from unmeasured enemies
         coherence_drain = self.wave_manager.calculate_coherence_drain(delta_time)
         self.resource_manager.consume_coherence(coherence_drain)
+        # Update effects
+        self.effects_manager.update(delta_time)
     
     def render(self):
         """Render game"""
@@ -302,7 +305,8 @@ class QuantumTowerDefense:
             self.renderer.render_entanglement_lines(
                 self.wave_manager.entangled_pairs
             )
-            
+            # ADD EFFECTS 
+            self.effects_manager.render(self.screen)
             # Render tower placement preview
             if self.selected_tower_type:
                 self.renderer.render_tower_preview(

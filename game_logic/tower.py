@@ -7,6 +7,7 @@ from typing import List, Tuple, Optional
 import numpy as np
 from qiskit import QuantumCircuit
 import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -64,7 +65,7 @@ class MeasurementTower(Tower):
         """
         if not self.can_attack(current_time):
             return None
-            
+        
         if enemy.is_measured:
             return enemy.measured_path
         
@@ -125,8 +126,8 @@ class PhaseTower(Tower):
         
         # Apply phase rotation to target path
         enemy.quantum_circuit = quantum_state_manager.apply_phase_gate(
-            enemy.quantum_circuit, 
-            self.target_path, 
+            enemy.quantum_circuit,
+            self.target_path,
             self.phase_angle
         )
         
@@ -175,7 +176,7 @@ class TeleportationTower(Tower):
     Uses quantum teleportation protocol
     """
     
-    def __init__(self, tower_id: int, position: Tuple[float, float], 
+    def __init__(self, tower_id: int, position: Tuple[float, float],
                  target_position: Tuple[float, float]):
         super().__init__(
             tower_id=tower_id,
@@ -204,7 +205,7 @@ class TeleportationTower(Tower):
             return 0.0
         
         distance = np.sqrt(
-            (enemy_pos[0] - self.target_position[0])**2 + 
+            (enemy_pos[0] - self.target_position[0])**2 +
             (enemy_pos[1] - self.target_position[1])**2
         )
         
@@ -229,7 +230,7 @@ class TowerManager:
         self.quantum_state_manager = quantum_state_manager
         self.next_tower_id = 0
     
-    def place_tower(self, tower_type: str, position: Tuple[float, float], 
+    def place_tower(self, tower_type: str, position: Tuple[float, float],
                     **kwargs) -> Optional[Tower]:
         """
         Place a new tower
@@ -271,65 +272,119 @@ class TowerManager:
         self.towers.clear()
         self.next_tower_id = 0
         logger.info("All towers cleared")
-
+    
     def get_towers_in_range(self, position: Tuple[float, float]) -> List[Tower]:
         """Get all towers that can reach a position"""
         in_range = []
         for tower in self.towers:
             distance = np.sqrt(
-                (tower.position[0] - position[0])**2 + 
+                (tower.position[0] - position[0])**2 +
                 (tower.position[1] - position[1])**2
             )
             if distance <= tower.range:
                 in_range.append(tower)
         return in_range
-
-    def update_all_towers(self, enemies: List, entangled_pairs: List, current_time: float):
+    
+    def update_all_towers(self, enemies: List, entangled_pairs: List, current_time: float, effects_manager=None):
         """
         Update all towers and execute attacks
         
         Args:
             enemies: List of active enemies
+            entangled_pairs: List of entangled enemy pairs
             current_time: Current game time
+            effects_manager: Visual effects manager (optional)
         """
         for tower in self.towers:
             # Find enemies in range
             targets = self.find_targets_in_range(tower, enemies)
             
             if tower.tower_type == "measurement":
-                self.handle_measurement_tower(tower, targets, current_time)
+                self.handle_measurement_tower(tower, targets, current_time, effects_manager)
             elif tower.tower_type == "phase":
-                self.handle_phase_tower(tower, targets, current_time)
+                self.handle_phase_tower(tower, targets, current_time, effects_manager)
             elif tower.tower_type == "entanglement":
-                self.handle_entanglement_tower(tower, targets)
+                self.handle_entanglement_tower(tower, targets, effects_manager)
             elif tower.tower_type == "teleportation":
-                self.handle_teleportation_tower(tower, targets, current_time)
+                self.handle_teleportation_tower(tower, targets, current_time, effects_manager)
     
     def find_targets_in_range(self, tower: Tower, enemies: List) -> List:
         """Find enemies in tower's range"""
         # Simplified - in full implementation, check actual positions
         return [e for e in enemies if e.is_alive()][:3]  # Max 3 targets
     
-    def handle_measurement_tower(self, tower: MeasurementTower, targets: List, current_time: float):
+    def handle_measurement_tower(self, tower: MeasurementTower, targets: List, current_time: float, effects_manager=None):
         """Handle measurement tower logic"""
-        for enemy in targets:
-            if not enemy.is_measured:
-                tower.measure_enemy(enemy, self.quantum_state_manager, current_time)
-                break  # Measure one enemy at a time
-            else:
-                tower.attack_measured_enemy(enemy, current_time)
+        if not targets:
+            return
+        
+        target = targets[0]
+        
+        if current_time - tower.last_attack_time >= 1.0 / tower.attack_speed:
+            if not target.is_measured:
+                # Measure
+                measured_path = self.quantum_state_manager.measure_path(target.quantum_circuit)
+                target.collapse_to_path(measured_path)
+                
+                # ADD EFFECT HERE
+                if effects_manager:
+                    from config.game_config import get_position_on_path
+                    pos = get_position_on_path(measured_path, target.position_progress)
+                    effects_manager.add_measurement_effect(pos, (100, 255, 100))
+            
+            # Deal damage
+            damage = tower.damage
+            actual_damage = target.take_damage(damage)
+            
+            # ADD DAMAGE NUMBER
+            if effects_manager and actual_damage > 0:
+                from config.game_config import get_position_on_path
+                pos = get_position_on_path(target.measured_path, target.position_progress)
+                effects_manager.add_damage_number(pos, int(actual_damage), (255, 100, 100))
+            
+            tower.last_attack_time = current_time
     
-    def handle_phase_tower(self, tower: PhaseTower, targets: List, current_time: float):
+    def handle_phase_tower(self, tower: PhaseTower, targets: List, current_time: float, effects_manager=None):
         """Handle phase tower logic"""
         for enemy in targets:
-            tower.apply_phase_shift(enemy, self.quantum_state_manager, current_time)
+            if not enemy.is_measured:
+                tower.apply_phase_shift(enemy, self.quantum_state_manager, current_time)
+                
+                # ADD PHASE EFFECT
+                if effects_manager and current_time - tower.last_attack_time < 0.1:
+                    from config.game_config import get_position_on_path
+                    # Show effect on all possible paths for unmeasured enemy
+                    positions = []
+                    for path_idx in range(4):
+                        pos = get_position_on_path(path_idx, enemy.position_progress)
+                        positions.append(pos)
+                    effects_manager.add_phase_shift_effect(tower.position, tower.target_path)
+                break
     
-    def handle_entanglement_tower(self, tower: EntanglementTower, targets: List):
+    def handle_entanglement_tower(self, tower: EntanglementTower, targets: List, effects_manager=None):
         """Handle entanglement tower logic"""
         if len(targets) >= 2:
-            tower.create_entanglement(targets[0], targets[1], self.quantum_state_manager)
+            # Check if targets are not already entangled
+            if not targets[0].is_entangled and not targets[1].is_entangled:
+                tower.create_entanglement(targets[0], targets[1], self.quantum_state_manager)
+                
+                # ADD ENTANGLEMENT EFFECT
+                if effects_manager:
+                    from config.game_config import get_position_on_path
+                    if targets[0].is_measured and targets[1].is_measured:
+                        pos1 = get_position_on_path(targets[0].measured_path, targets[0].position_progress)
+                        pos2 = get_position_on_path(targets[1].measured_path, targets[1].position_progress)
+                        effects_manager.add_entanglement_effect(pos1, pos2, (200, 100, 255))
     
-    def handle_teleportation_tower(self, tower: TeleportationTower, targets: List, current_time: float):
+    def handle_teleportation_tower(self, tower: TeleportationTower, targets: List, current_time: float, effects_manager=None):
         """Handle teleportation tower logic"""
         for enemy in targets:
-            tower.teleport_attack(enemy, current_time)
+            damage = tower.teleport_attack(enemy, current_time)
+            
+            # ADD TELEPORTATION EFFECT
+            if effects_manager and damage > 0:
+                from config.game_config import get_position_on_path
+                if enemy.is_measured:
+                    end_pos = get_position_on_path(enemy.measured_path, enemy.position_progress)
+                    effects_manager.add_teleportation_effect(tower.position, end_pos)
+                    effects_manager.add_damage_number(end_pos, int(damage), (100, 255, 255))
