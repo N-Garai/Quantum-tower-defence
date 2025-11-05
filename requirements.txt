@@ -1,0 +1,16 @@
+# Quantum Tower Defense - Requirements
+
+# Quantum Computing
+qiskit==1.0.0
+qiskit-aer==0.13.3
+
+# Game Development
+pygame==2.5.2
+numpy==1.26.0
+
+# Visualization
+matplotlib==3.8.0
+seaborn==0.13.0
+
+# Utilities
+dataclasses-json==0.6.1
