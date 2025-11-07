@@ -60,7 +60,7 @@ class UIManager:
         self.screen.blit(money_text, (20, SCREEN_HEIGHT - 85))
         
         # Lives
-        lives_color = COLORS['health_bar'] if resource_manager.lives <= 5 else (255, 100, 100)
+        lives_color = COLORS['health_bar'] if resource_manager.lives > 5 else (255, 100, 100)
         lives_text = self.font_medium.render(
             f"❤️  {resource_manager.lives}",
             True,
@@ -245,8 +245,8 @@ class UIManager:
     def render_tutorial(self):
         """Render tutorial overlay"""
         # Create semi-transparent overlay
-        overlay_width = 480
-        overlay_height = 400
+        overlay_width = 500
+        overlay_height = 460
         overlay = pygame.Surface((overlay_width, overlay_height), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 230))
         
@@ -266,9 +266,11 @@ class UIManager:
             ("━━━ Controls ━━━", True, 16, COLORS['ui_text']),
             ("  1-4 Keys: Select tower type", False, 14, COLORS['ui_text']),
             ("  Mouse Click: Place tower", False, 14, COLORS['ui_text']),
+            ("  Right Click: Select tower", False, 14, (255, 200, 100)),
+            ("  DELETE/BACKSPACE: Remove tower (50% refund)", False, 14, (255, 200, 100)),
             ("  SPACE: Start wave", False, 14, COLORS['ui_text']),
             ("  ESC: Pause game", False, 14, COLORS['ui_text']),
-            ("  T: Toggle tutorial", False, 14, COLORS['ui_text']),
+            ("  T: Toggle this tutorial", False, 14, COLORS['ui_text']),
             ("  R: Restart (when game over)", False, 14, COLORS['ui_text']),
             ("", False, 12, COLORS['ui_text']),
             ("━━━ Quantum Mechanics ━━━", True, 16, COLORS['quantum_coherence']),

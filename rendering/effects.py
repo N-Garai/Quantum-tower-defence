@@ -49,8 +49,8 @@ class MeasurementEffect:
         self.start_time = time.time()
         self.duration = 0.5  # seconds
         self.max_radius = 80
-    
-    def update(self):
+
+    def update(self, delta_time=0):
         """Update effect state"""
         elapsed = time.time() - self.start_time
         return elapsed < self.duration
@@ -192,8 +192,8 @@ class PhaseShiftEffect:
         self.start_time = time.time()
         self.duration = 0.3
         self.color = (255, 200, 100)
-    
-    def update(self):
+
+    def update(self, delta_time=0):
         """Update effect state"""
         elapsed = time.time() - self.start_time
         return elapsed < self.duration
@@ -213,10 +213,11 @@ class PhaseShiftEffect:
             y = self.position[1] + math.sin(angle) * radius
             
             alpha = int(255 * (1 - progress))
-            surf = pygame.Surface((8, 8), pygame.SRCALPHA)
-            color_with_alpha = (*self.color, alpha)
-            pygame.draw.circle(surf, color_with_alpha, (4, 4), 4)
-            screen.blit(surf, (int(x) - 4, int(y) - 4))
+            if alpha>0:
+                surf = pygame.Surface((8, 8), pygame.SRCALPHA)
+                color_with_alpha = (*self.color, alpha)
+                pygame.draw.circle(surf, color_with_alpha, (4, 4), 4)
+                screen.blit(surf, (int(x) - 4, int(y) - 4))
 
 
 class TeleportationEffect:
@@ -229,7 +230,7 @@ class TeleportationEffect:
         self.duration = 0.2
         self.color = (100, 255, 255)
     
-    def update(self):
+    def update(self, delta_time=0):
         """Update effect state"""
         elapsed = time.time() - self.start_time
         return elapsed < self.duration
