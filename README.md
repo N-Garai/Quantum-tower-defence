@@ -5,61 +5,759 @@
 ![Pygame](https://img.shields.io/badge/pygame-2.5.2-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
+An educational tower defense game that brings quantum computing concepts to life using IBM's Qiskit SDK. Experience real quantum mechanics through engaging gameplay where enemies exist in superposition and collapse when measured!
+
+---
+
+## 📖 Table of Contents
+
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [Game Mechanics](#-game-mechanics)
+- [Quantum Concepts](#-quantum-concepts-explained)
+- [Installation](#-installation)
+- [How to Play](#-how-to-play)
+- [Tower Types](#-tower-types)
+- [Enemy Types](#-enemy-types)
+- [Controls](#-controls)
+- [Game Strategy](#-game-strategy)
+- [Technical Architecture](#-technical-architecture)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+---
+
 ## 🌟 Overview
 
-Quantum Tower Defense is an educational game that combines tower defense gameplay with real quantum computing concepts using IBM's Qiskit SDK. Enemies exist in quantum superposition across multiple paths until measured by towers, creating unique strategic gameplay based on actual quantum mechanics.
+Quantum Tower Defense is an innovative educational game that bridges quantum computing and gaming. Built with **IBM Qiskit** and **Pygame**, it transforms abstract quantum mechanics into tangible gameplay mechanics. Enemies exist in quantum superposition across multiple paths simultaneously until observed, creating unique strategic challenges based on real quantum phenomena.
+
+**Educational Purpose:** Learn quantum computing concepts like superposition, entanglement, measurement, and phase shifts through interactive gameplay.
+
+**Target Audience:** Students, educators, quantum computing enthusiasts, and gamers interested in science.
+
+---
 
 ## 🎯 Key Features
 
-- **Quantum Superposition**: Enemies exist on multiple paths simultaneously
-- **Wave Function Collapse**: Measurement towers force enemies to single paths
-- **Quantum Entanglement**: Enemy pairs share damage through quantum correlation
-- **Phase Manipulation**: Shift probability distributions of unmeasured enemies
-- **Quantum Teleportation**: Instant damage transfer across the map
-- **Resource Management**: Balance quantum coherence budget with enemy spawns
+### Quantum Mechanics Implementation
+- ⚛️ **Real Quantum Circuits**: Uses actual Qiskit quantum circuits, not simulations
+- 🌊 **Superposition States**: Enemies exist on multiple paths with probability amplitudes
+- 📊 **Wave Function Collapse**: Measurement towers collapse superposition to definite states
+- 🔗 **Quantum Entanglement**: Enemy pairs share quantum states and damage
+- 🌀 **Phase Manipulation**: Rotate probability distributions using quantum gates
+- 📡 **Quantum Teleportation**: Transfer damage through entangled states
 
-## 🔬 Quantum Concepts Implemented
+### Gameplay Features
+- 🎮 **4 Unique Tower Types**: Each represents a different quantum operation
+- 👾 **4 Enemy Types**: Basic, Fast, Tank, and Boss with varying properties
+- 📈 **Progressive Difficulty**: 6+ waves with increasing complexity
+- 💰 **Resource Management**: Balance money, lives, and quantum coherence
+- 🎨 **Quantum Visualization**: See probability distributions and quantum states
+- 📝 **In-Game Tutorial**: Learn as you play with helpful tooltips
 
-- Hadamard gates for equal superposition
-- Quantum measurement and state collapse
-- Bell states for entanglement
-- Phase rotation gates
-- Decoherence mechanics
-- No-cloning theorem
+---
 
-## 📋 Prerequisites
+## 🎮 Game Mechanics
 
-- Python 3.9 or higher
-- pip package manager
-- 4GB RAM minimum
-- Graphics support (OpenGL)
+### Core Loop
 
-## 🚀 Installation
+1. **Enemy Spawning**: Enemies spawn in quantum superposition across 4 paths
+2. **Superposition Movement**: Enemies progress along ALL paths simultaneously with probability amplitudes
+3. **Tower Placement**: Strategically place towers to measure, manipulate, or damage enemies
+4. **Measurement**: When measured, enemies collapse to a single path
+5. **Defense**: Prevent enemies from reaching the end to protect your base
+
+### Resource System
+
+**💵 Money**
+- Starting amount: $400
+- Earn money by defeating enemies
+- Spend on towers ($100-$250 each)
+- Get 50% refund when selling towers
+
+**❤️ Lives**
+- Starting lives: 20
+- Lose 1 life per enemy that reaches the end
+- Game over at 0 lives
+
+**🌊 Quantum Coherence**
+- Starting coherence: 10.0 units
+- Maximum: 20.0 units
+- Regenerates at 0.1 units/second
+- Lost when enemies spawn in superposition
+- Required for maintaining quantum states
+
+### Path System
+
+The game features **4 distinct paths** representing the computational basis states of a 2-qubit system:
+- **Path 0 (|00⟩)**: Top route - curved with moderate length
+- **Path 1 (|01⟩)**: Upper-middle route - direct and fast
+- **Path 2 (|10⟩)**: Lower-middle route - long with corners
+- **Path 3 (|11⟩)**: Bottom route - complex with elevation changes
+
+Each enemy starts in equal superposition: `|ψ⟩ = ½(|00⟩ + |01⟩ + |10⟩ + |11⟩)`
+
+---
+
+## 🔬 Quantum Concepts Explained
+
+### 1. Superposition
+**What it is**: A quantum system existing in multiple states simultaneously.
+
+**In the game**: Enemies appear semi-transparent on all 4 paths at once. Each path has a probability amplitude determining the likelihood of finding the enemy there when measured.
+
+**Quantum Circuit**: Hadamard gates create equal superposition:
+```
+H gate on qubit 0: |0⟩ → (|0⟩ + |1⟩)/√2
+H gate on qubit 1: |0⟩ → (|0⟩ + |1⟩)/√2
+Result: |00⟩ → (|00⟩ + |01⟩ + |10⟩ + |11⟩)/2
+```
+
+### 2. Measurement & Collapse
+**What it is**: Observing a quantum system forces it into a definite state.
+
+**In the game**: Measurement towers collapse enemy superposition. The enemy becomes solid on one path based on probability distribution. Cannot return to superposition (irreversible).
+
+**Effect**: Changes semi-transparent enemy → fully visible on single path
+
+### 3. Quantum Entanglement
+**What it is**: Two particles become correlated; measuring one affects the other instantly.
+
+**In the game**: Entanglement towers link two nearby enemies. Damage to one enemy is proportionally shared with its entangled partner, even across different paths.
+
+**Quantum Circuit**: CNOT gate creates Bell states for maximum entanglement
+
+### 4. Phase Shift
+**What it is**: Rotating the phase of probability amplitudes without changing probabilities (until measured).
+
+**In the game**: Phase towers apply rotation gates to reduce the probability of enemies being on specific paths. This makes enemies more likely to collapse to other paths when measured.
+
+**Quantum Circuit**: U3 gate applies rotation: `U3(θ, 0, 0)|ψ⟩`
+
+### 5. Quantum Teleportation
+**What it is**: Transferring quantum states using entanglement and classical communication.
+
+**In the game**: Teleportation towers use entangled states to transfer damage instantly across the map to target locations.
+
+### 6. Decoherence
+**What it is**: Quantum states degrading due to environmental interaction.
+
+**In the game**: Quantum coherence resource decreases over time with unmeasured enemies. When depleted, quantum operations become less effective.
+
+---
+
+## � Installation
+
+### Prerequisites
+
+- **Python**: 3.9 or higher
+- **pip**: Package manager (included with Python)
+- **Operating System**: Windows, macOS, or Linux
+- **RAM**: 4GB minimum
+- **Graphics**: OpenGL support for rendering
 
 ### Quick Start
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/quantum-tower-defense.git
-cd quantum-tower-defense
+# 1. Clone the repository
+git clone https://github.com/N-Garai/Quantum-tower-defence.git
+cd Quantum-tower-defence
+
+# 2. Create virtual environment
+python -m venv venv
+
+# 3. Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+# 5. Run the game
+python main-game.py
+```
+
+### Dependency List
+
+The game requires the following packages:
+- **qiskit 1.0.0**: Quantum computing framework
+- **qiskit-aer 0.13.3**: High-performance quantum circuit simulator
+- **pygame 2.5.2**: Game development library
+- **numpy 1.26.0**: Numerical computing
+- **matplotlib 3.8.0**: Visualization and plotting
+- **seaborn 0.13.0**: Statistical data visualization
+- **dataclasses-json 0.6.1**: JSON serialization for dataclasses
+
+---
+
+## 🎮 How to Play
+
+### Starting the Game
+
+1. Launch the game: `python main-game.py`
+2. The **main menu** appears
+3. Press **SPACE** to start or **T** to toggle tutorial
+4. Game begins in wave preparation mode
+
+### Objective
+
+**Survive all waves by preventing enemies from reaching the end of paths!**
+- Protect your base (20 lives)
+- Defeat enemies to earn money
+- Build towers strategically
+- Manage quantum coherence wisely
+
+### Game Flow
+
+1. **Preparation Phase**
+   - Place towers before wave starts
+   - Plan strategy based on path layout
+   - Check resources (money & coherence)
+
+2. **Wave Phase**
+   - Enemies spawn in superposition
+   - Towers automatically engage enemies
+   - Monitor enemy progress on all paths
+   - Watch for entangled pairs (purple connection lines)
+
+3. **Between Waves**
+   - Collect rewards from defeated enemies
+   - Upgrade tower placement
+   - Prepare for next wave
+   - Press **SPACE** to start next wave
+
+4. **Victory or Defeat**
+   - **Victory**: Survive all waves with lives remaining
+   - **Defeat**: All lives lost (Game Over)
+   - Press **R** to restart
+
+---
+
+## 🗼 Tower Types
+
+### 1. 📐 Measurement Tower
+**Cost**: $100 | **Hotkey**: `1` | **Range**: 150px
+
+**Quantum Operation**: Measurement / Wave Function Collapse
+
+**How it works**:
+- Collapses enemy superposition to single definite path
+- Enemy becomes solid on measured path (based on probability)
+- Deals 20 damage per second to measured enemies
+- Cannot affect already-measured enemies
+
+**Strategy**:
+- Place near path intersections for maximum coverage
+- Essential for dealing damage to enemies
+- Cheapest tower - good for early game
+- Use multiple towers for continuous measurement and damage
+
+**Quantum Principle**: Measurement forces eigenstate collapse irreversibly
+
+---
+
+### 2. 🌀 Phase Tower
+**Cost**: $150 | **Hotkey**: `2` | **Range**: 120px
+
+**Quantum Operation**: Phase Rotation Gate (U3 gate)
+
+**How it works**:
+- Applies phase shift to specific path probability
+- Reduces likelihood of enemy being on target path
+- When measured, enemy more likely to collapse to other paths
+- No direct damage, affects probability distribution
+
+**Strategy**:
+- Place before measurement towers
+- Target the shortest/easiest path
+- Force enemies onto longer, harder paths
+- Combine with measurement towers for control
+
+**Quantum Principle**: Phase gates rotate probability amplitudes without changing measurement probabilities until observed
+
+**Path Selection**: Press numpad `0-3` or click path indicator
+
+---
+
+### 3. 🔗 Entanglement Tower
+**Cost**: $200 | **Hotkey**: `3` | **Range**: 100px
+
+**Quantum Operation**: CNOT Gate / Bell State Creation
+
+**How it works**:
+- Links two nearby enemies quantum mechanically
+- Damage dealt to one enemy is shared with partner (50% transfer)
+- Creates purple connection line between entangled enemies
+- Works across different paths
+- Deals 15 damage per second base damage
+
+**Strategy**:
+- Place where enemies group together
+- Doubles effective damage output
+- Very effective against tank enemies
+- Entanglement persists until one enemy dies
+
+**Quantum Principle**: Entangled particles share correlated states; measuring one affects the other
+
+---
+
+### 4. 📡 Teleportation Tower
+**Cost**: $250 | **Hotkey**: `4` | **Range**: 80px (attack) / ∞ (teleport)
+
+**Quantum Operation**: Quantum Teleportation Protocol
+
+**How it works**:
+- Deals 30 damage per second (highest damage)
+- Transfers damage instantly to distant target position
+- Uses quantum entanglement for non-local effects
+- Short attack range but map-wide teleportation
+
+**Strategy**:
+- Place at key choke points
+- Most expensive but highest damage
+- Effective against boss enemies
+- Use to cover areas other towers can't reach
+
+**Quantum Principle**: Teleportation uses entanglement and classical communication to transfer quantum states
+
+---
+
+## 👾 Enemy Types
+
+### 🟦 Basic Enemy
+- **Health**: 100 HP
+- **Speed**: 0.02 (moderate)
+- **Reward**: $10
+- **Coherence Cost**: 0.5
+- **Color**: Blue (superposition) / Red (measured)
+
+**Strategy**: Standard enemy, use measurement towers for reliable takedown
+
+---
+
+### ⚡ Fast Enemy
+- **Health**: 50 HP
+- **Speed**: 0.04 (fast)
+- **Reward**: $15
+- **Coherence Cost**: 0.3
+- **Color**: Light blue (superposition) / Orange (measured)
+
+**Strategy**: Prioritize with high attack speed towers, measure early to track
+
+---
+
+### 🛡️ Tank Enemy
+- **Health**: 300 HP
+- **Speed**: 0.01 (slow)
+- **Reward**: $30
+- **Coherence Cost**: 0.8
+- **Color**: Dark blue (superposition) / Purple (measured)
+
+**Strategy**: Use entanglement to share damage, focus fire with multiple towers
+
+---
+
+### 👑 Boss Enemy
+- **Health**: 1000 HP
+- **Speed**: 0.015 (slow-moderate)
+- **Reward**: $100
+- **Coherence Cost**: 1.0
+- **Color**: Very dark blue (superposition) / Dark red (measured)
+
+**Strategy**: Require all tower types, entanglement highly effective, measure immediately
+
+---
+
+## 🎯 Controls
+
+### Keyboard Controls
+
+| Key | Action |
+|-----|--------|
+| **1** | Select Measurement Tower |
+| **2** | Select Phase Tower |
+| **3** | Select Entanglement Tower |
+| **4** | Select Teleportation Tower |
+| **SPACE** | Start Next Wave / Start Game |
+| **ESC** | Pause / Resume / Exit to Menu |
+| **R** | Restart Game (Game Over screen) |
+| **T** | Toggle Tutorial Overlay |
+| **Numpad 0-3** | Select Path for Phase Tower |
+| **DELETE/BACKSPACE** | Remove Selected Tower (50% refund) |
+
+### Mouse Controls
+
+| Action | Function |
+|--------|----------|
+| **Left Click** | Place selected tower / UI interaction |
+| **Right Click** | Select tower for removal |
+| **Hover** | Preview tower placement range |
+
+---
+
+## 🧠 Game Strategy
+
+### Early Game (Waves 1-2)
+1. **Start with Measurement Towers**
+   - Place 2-3 measurement towers covering multiple paths
+   - Focus on path intersections
+   - Build up economy by defeating basic enemies
+
+2. **Resource Management**
+   - Save money for critical upgrades
+   - Don't spend all money immediately
+   - Watch quantum coherence levels
+
+### Mid Game (Waves 3-4)
+1. **Diversify Tower Types**
+   - Add Phase Towers before measurement points
+   - Place Entanglement Towers in dense areas
+   - Create damage synergies
+
+2. **Path Control**
+   - Use Phase Towers to avoid shortest paths
+   - Force enemies onto well-defended routes
+   - Create measurement chokepoints
+
+### Late Game (Waves 5+)
+1. **Maximum Synergy**
+   - Phase → Measurement → Entanglement combos
+   - Add Teleportation Towers for bosses
+   - Focus fire on high-value targets
+
+2. **Tower Placement Strategy**
+   - Upgrade existing positions by selling and rebuilding
+   - Cover path endpoints with high damage
+   - Leave some areas for emergency placement
+
+### Advanced Strategies
+
+**Quantum Coherence Management**:
+- Measure enemies early to reduce coherence drain
+- Let coherence regenerate between waves
+- Don't let it reach zero (reduced effectiveness)
+
+**Entanglement Chaining**:
+- Create multiple entangled pairs
+- Focus damage on one enemy to damage multiple
+- Extremely effective against groups
+
+**Phase Manipulation**:
+- Target path 1 (usually shortest)
+- Forces enemies onto paths 2-3 (longer)
+- Buys more time for towers to deal damage
+
+**Tower Selling**:
+- 50% refund on tower removal
+- Reposition towers as waves progress
+- Strategic rebuild for boss waves
+
+---
+
+## 🏗️ Technical Architecture
+
+### System Architecture
+
+```
+┌─────────────────────────────────────────────────┐
+│           Main Game Loop (60 FPS)               │
+│                                                 │
+│  ┌───────────┐  ┌────────────┐  ┌───────────┐ │
+│  │  Input    │→│   Update   │→│  Render   │ │
+│  │ Handler   │  │  Systems   │  │  Engine   │ │
+│  └───────────┘  └────────────┘  └───────────┘ │
+└─────────────────────────────────────────────────┘
+         ↓               ↓               ↓
+┌────────────┐  ┌────────────┐  ┌────────────┐
+│  Quantum   │  │   Game     │  │ Rendering  │
+│  Engine    │  │   Logic    │  │  System    │
+│            │  │            │  │            │
+│ • Qiskit   │  │ • Towers   │  │ • Pygame   │
+│ • States   │  │ • Enemies  │  │ • UI       │
+│ • Gates    │  │ • Waves    │  │ • Effects  │
+│ • Measure  │  │ • Resources│  │ • Sprites  │
+└────────────┘  └────────────┘  └────────────┘
+```
+
+### Key Components
+
+**Quantum Engine** (`quantum_engine/`):
+- `quantum_state.py`: Manages quantum circuits and state vectors
+- `enemy_superposition.py`: Handles enemy quantum states and entanglement
+- Uses Qiskit for real quantum circuit simulation
+
+**Game Logic** (`game_logic/`):
+- `tower.py`: Tower entities and attack logic (4 types)
+- `wave_manager.py`: Enemy spawning and wave progression
+- `resource_manager.py`: Money, lives, quantum coherence tracking
+
+**Rendering** (`rendering/`):
+- `game_renderer.py`: Main graphics engine
+- `ui.py`: User interface components
+- `effects.py`: Visual effects for quantum operations
+
+**Configuration** (`config/`):
+- `game_config.py`: All game constants, paths, and settings
+
+### Data Flow
+
+```
+Enemy Spawn → Quantum Circuit Creation (H gates)
+     ↓
+Superposition Movement (All paths simultaneously)
+     ↓
+Tower Detection (Range check on all paths)
+     ↓
+Quantum Operation (Measurement/Phase/Entanglement)
+     ↓
+State Update (Collapse/Phase Shift/Link)
+     ↓
+Damage Application → Health Reduction
+     ↓
+Enemy Defeat OR End Reached
+```
+
+---
+
+## 📚 Educational Resources
+
+### Learning Quantum Computing
+
+This game implements real quantum concepts. To learn more:
+
+1. **IBM Quantum Learning**: https://learning.quantum.ibm.com/
+2. **Qiskit Textbook**: https://qiskit.org/learn
+3. **Quantum Country**: https://quantum.country/
+4. **MIT OpenCourseWare**: Quantum Computation
+
+### Jupyter Notebooks
+
+The project includes educational notebooks in `notebooks/`:
+
+1. **01-quantum-concepts.ipynb**: Introduction to quantum mechanics
+2. **02-game-prototype.ipynb**: Game mechanics testing
+3. **03-full-demo.ipynb**: Interactive visualization
+
+Run notebooks:
+```bash
+jupyter notebook notebooks/
+```
+
+### Quantum Concepts Mapping
+
+| Game Mechanic | Quantum Concept | Qiskit Operation |
+|--------------|-----------------|------------------|
+| Enemy Spawning | Superposition Creation | Hadamard Gate (H) |
+| Measurement Tower | Wave Function Collapse | qc.measure() |
+| Phase Tower | Phase Rotation | U3 Gate |
+| Entanglement Tower | Bell State | CNOT Gate |
+| Teleportation Tower | Quantum Teleportation | Bell + Measure |
+| Probability Display | State Vector | Statevector.probabilities() |
+
+---
+
+## 🧪 Development
+
+### Running Tests
+
+```bash
+# Install dev dependencies
+pip install pytest pytest-cov
+
+# Run all tests
+pytest tests/
+
+# Run with coverage report
+pytest --cov=quantum_engine --cov=game_logic tests/
+
+# Run specific test category
+pytest tests/test_quantum.py -v
+```
+
+### Project Structure
+
+```
+quantum-tower-defense/
+├── main-game.py                 # Game entry point
+├── requirements.txt             # Python dependencies
+├── .gitignore                   # Git ignore rules
+│
+├── config/
+│   ├── __init__.py
+│   └── game_config.py           # Game constants and settings
+│
+├── quantum_engine/
+│   ├── __init__.py
+│   ├── quantum_state.py         # Quantum state management
+│   └── enemy_superposition.py   # Enemy quantum behaviors
+│
+├── game_logic/
+│   ├── __init__.py
+│   ├── tower.py                 # All tower types
+│   ├── wave_manager.py          # Wave spawning system
+│   └── resource_manager.py      # Resource tracking
+│
+├── rendering/
+│   ├── __init__.py
+│   ├── game_renderer.py         # Graphics rendering
+│   ├── ui.py                    # UI components
+│   └── effects.py               # Visual effects
+│
+└── notebooks/
+    ├── 01-quantum-concepts.ipynb
+    ├── 02-game-prototype.ipynb
+    └── 03-full-demo.ipynb
+```
+
+### Code Style
+
+- **Python**: PEP 8 style guide
+- **Docstrings**: Google style
+- **Type Hints**: Used throughout
+- **Logging**: Structured logging with levels
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how to get started:
+
+### Ways to Contribute
+
+1. **🐛 Bug Reports**: Open an issue with detailed description
+2. **💡 Feature Requests**: Suggest new quantum mechanics or gameplay features
+3. **📝 Documentation**: Improve README, add tutorials, fix typos
+4. **🎨 Assets**: Contribute sprites, sounds, or visual effects
+5. **🔬 Quantum Accuracy**: Verify quantum mechanics implementation
+6. **🎮 Game Balance**: Suggest tower/enemy balance changes
+
+### Contribution Process
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+3. **Commit** changes: `git commit -m 'Add amazing feature'`
+4. **Push** to branch: `git push origin feature/amazing-feature`
+5. **Open** a Pull Request
+
+### Development Setup
+
+```bash
+# Clone your fork
+git clone https://github.com/YOUR_USERNAME/Quantum-tower-defence.git
+cd Quantum-tower-defence
+
+# Add upstream remote
+git remote add upstream https://github.com/N-Garai/Quantum-tower-defence.git
 
 # Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
-# Install dependencies
-pip install -r requirements.txt
+# Install in development mode
+pip install -e .
+pip install pytest pytest-cov black flake8
 
-# Run the game
-python main.py
+# Run tests before committing
+pytest tests/
 ```
 
-### Docker Installation (Alternative)
+### Code Guidelines
 
-```bash
-docker build -t quantum-td .
-docker run -it --rm -e DISPLAY=$DISPLAY quantum-td
+- Write unit tests for new features
+- Follow PEP 8 style guidelines
+- Add docstrings to all functions/classes
+- Update README if adding features
+- Verify quantum mechanics accuracy
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+### MIT License Summary
+
+- ✅ Commercial use
+- ✅ Modification
+- ✅ Distribution
+- ✅ Private use
+- ℹ️ License and copyright notice required
+
+---
+
+## 🙏 Acknowledgments
+
+- **IBM Qiskit Team**: For the incredible quantum computing framework
+- **Pygame Community**: For the robust game development library
+- **Quantum Computing Community**: For education and research resources
+- **Contributors**: Everyone who has contributed to this project
+
+---
+
+## 📞 Contact & Support
+
+- **GitHub Issues**: [Report bugs or request features](https://github.com/N-Garai/Quantum-tower-defence/issues)
+- **Discussions**: [Join community discussions](https://github.com/N-Garai/Quantum-tower-defence/discussions)
+- **Email**: For private inquiries
+
+---
+
+## 🎓 Citation
+
+If you use this project in research or education, please cite:
+
+```bibtex
+@software{quantum_tower_defense,
+  title = {Quantum Tower Defense: Educational Game with Qiskit},
+  author = {N-Garai},
+  year = {2025},
+  url = {https://github.com/N-Garai/Quantum-tower-defence}
+}
 ```
+
+---
+
+## 🗺️ Roadmap
+
+### Version 1.1 (Planned)
+- [ ] Sound effects and background music
+- [ ] Additional tower upgrade system
+- [ ] More enemy types (flying quantum enemies)
+- [ ] Multiplayer mode
+- [ ] Level editor
+
+### Version 2.0 (Future)
+- [ ] 3D graphics option
+- [ ] VR support
+- [ ] Real quantum hardware integration (IBM Quantum)
+- [ ] Educational campaign mode
+- [ ] Achievement system
+
+---
+
+## ⭐ Star History
+
+If you find this project helpful, please consider giving it a star! ⭐
+
+---
+
+## 📊 Statistics
+
+- **Lines of Code**: ~2,500
+- **Quantum Circuits**: 4 types
+- **Tower Types**: 4
+- **Enemy Types**: 4
+- **Waves**: 6+ (scalable)
+- **Paths**: 4 (2-qubit system)
+
+---
+
+**Built with ❤️ and ⚛️ by quantum computing enthusiasts**
+
+*Making quantum mechanics accessible through gaming!*
+```
+
 
 ## 🎮 How to Play
 
